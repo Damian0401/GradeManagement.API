@@ -1,11 +1,6 @@
 ﻿using Application.Services.Utilities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -14,36 +9,26 @@ namespace API.Controllers
     {
         protected IActionResult SendResponse(ServiceResponse response)
         {
-            switch (response.ResponseType)
+            return response.ResponseType switch
             {
-                case HttpStatusCode.OK:
-                    return Ok();
-                case HttpStatusCode.Unauthorized:
-                    return Unauthorized();
-                case HttpStatusCode.Forbidden:
-                    return Forbid();
-                case HttpStatusCode.NotFound:
-                    return NotFound();
-                default:
-                    return BadRequest(response.Message);
-            }
+                HttpStatusCode.OK => Ok(),
+                HttpStatusCode.Unauthorized => Unauthorized(),
+                HttpStatusCode.Forbidden => Forbid(),
+                HttpStatusCode.NotFound => NotFound(),
+                _ => BadRequest(response.Message),
+            };
         }
 
         protected IActionResult SendResponse<T>(ServiceResponse<T> response)
         {
-            switch (response.ResponseType)
+            return response.ResponseType switch
             {
-                case HttpStatusCode.OK:
-                    return Ok(response.ResponseContent);
-                case HttpStatusCode.Unauthorized:
-                    return Unauthorized();
-                case HttpStatusCode.Forbidden:
-                    return Forbid();
-                case HttpStatusCode.NotFound:
-                    return NotFound();
-                default:
-                    return BadRequest(response.Message);
-            }
+                HttpStatusCode.OK => Ok(response.ResponseContent),
+                HttpStatusCode.Unauthorized => Unauthorized(),
+                HttpStatusCode.Forbidden => Forbid(),
+                HttpStatusCode.NotFound => NotFound(),
+                _ => BadRequest(response.Message),
+            };
         }
     }
 }
