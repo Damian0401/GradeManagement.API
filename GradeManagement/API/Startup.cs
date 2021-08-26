@@ -1,9 +1,13 @@
+using Domain.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Presistence;
 
 namespace API
 {
@@ -25,6 +29,21 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GradeManagement.API", Version = "v1" });
             });
+            services.AddDbContext<DataBaseContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("GradeDBContext"));
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+            var builder = services.AddIdentityCore<ApplicationUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<DataBaseContext>();
+            identityBuilder.AddSignInManager<SignInManager<ApplicationUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +66,8 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors("CorsPolicy");
         }
     }
 }
