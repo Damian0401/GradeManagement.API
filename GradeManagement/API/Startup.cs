@@ -78,9 +78,10 @@ namespace API
             identityBuilder.AddEntityFrameworkStores<DataBaseContext>();
             identityBuilder.AddSignInManager<SignInManager<ApplicationUser>>();
             services.AddAutoMapper(x => x.AddProfile<AutoMapperProfile>(), typeof(Startup));
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

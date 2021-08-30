@@ -26,15 +26,19 @@ namespace Application.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         private readonly IWebHostEnvironment _hostEnvironment;
+
+        private readonly IJwtGenerator _jwtGenerator;
         public UserService(IServiceProvider serviceProvider, ILogger<UserService> logger, 
-            SignInManager<ApplicationUser> signInManager, IWebHostEnvironment hostEnvironment) 
-            : base(serviceProvider)
+            SignInManager<ApplicationUser> signInManager, IWebHostEnvironment hostEnvironment,
+            IJwtGenerator jwtGenerator) : base(serviceProvider)
         {
             _logger = logger;
 
             _signInManager = signInManager;
 
             _hostEnvironment = hostEnvironment;
+
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<ServiceResponse<RegisterUserDtoResponse>> RegisterUserAsync(RegisterUserDtoRequest dto)
@@ -132,7 +136,7 @@ namespace Application.Services
 
             var responseDto = Mapper.Map<RegisterUserDtoResponse>(userToRegister);
 
-            responseDto.Token = "This is a token";
+            responseDto.Token = _jwtGenerator.CreateToken(userToRegister, DateTime.Now.AddDays(3));
 
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK, responseDto);
         }
@@ -151,7 +155,7 @@ namespace Application.Services
 
             var responseDto = Mapper.Map<RegisterUserDtoResponse>(userToRegister);
 
-            responseDto.Token = "This is a token";
+            responseDto.Token = _jwtGenerator.CreateToken(userToRegister, DateTime.Now.AddDays(3));
 
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK, responseDto);
         }
