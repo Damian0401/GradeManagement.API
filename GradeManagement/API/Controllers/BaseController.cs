@@ -4,12 +4,13 @@ using System.Net;
 
 namespace API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class BaseController : ControllerBase
     {
         protected IActionResult SendResponse(ServiceResponse response)
         {
-            return response.ResponseType switch
+            return response.StatusCode switch
             {
                 HttpStatusCode.OK => Ok(),
                 HttpStatusCode.Unauthorized => Unauthorized(),
@@ -21,7 +22,7 @@ namespace API.Controllers
 
         protected IActionResult SendResponse<T>(ServiceResponse<T> response)
         {
-            return response.ResponseType switch
+            return response.StatusCode switch
             {
                 HttpStatusCode.OK => Ok(response.ResponseContent),
                 HttpStatusCode.Unauthorized => Unauthorized(),

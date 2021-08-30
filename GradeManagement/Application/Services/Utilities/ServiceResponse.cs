@@ -4,47 +4,47 @@ namespace Application.Services.Utilities
 {
     public class ServiceResponse
     {
-        public HttpStatusCode ResponseType { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
 
-        public ServiceResponse(HttpStatusCode responseType)
+        public ServiceResponse(HttpStatusCode statusCode)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
         }
 
-        public ServiceResponse(HttpStatusCode responseType, string message)
+        public ServiceResponse(HttpStatusCode statusCode, string message)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
             Message = message;
         }
     }
 
     public class ServiceResponse<T>
     {
-        public HttpStatusCode ResponseType { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
         public T ResponseContent { get; set; }
 
-        public ServiceResponse(HttpStatusCode responseType)
+        public ServiceResponse(HttpStatusCode statusCode)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
         }
 
-        public ServiceResponse(HttpStatusCode responseType, string message)
+        public ServiceResponse(HttpStatusCode statusCode, string message)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
             Message = message;
         }
 
-        public ServiceResponse(HttpStatusCode responseType, T responseContent)
+        public ServiceResponse(HttpStatusCode statusCode, T responseContent)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
             ResponseContent = responseContent;
         }
 
-        public ServiceResponse(HttpStatusCode responseType, string message, T responseContent)
+        public ServiceResponse(HttpStatusCode statusCode, string message, T responseContent)
         {
-            ResponseType = responseType;
+            StatusCode = statusCode;
             Message = message;
             ResponseContent = responseContent;
         }

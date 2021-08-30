@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Presistence
 {
@@ -15,6 +16,12 @@ namespace Presistence
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>()
                 .HasKey(x => x.Id);
+
+            var converner = new EnumToStringConverter<Gender>();
+
+            builder.Entity<ApplicationUser>()
+                .Property(x => x.Gender)
+                .HasConversion(converner);
         }
     }
 }
