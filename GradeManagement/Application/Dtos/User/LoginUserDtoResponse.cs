@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos.User
 {
-    public class RegisterUserDtoResponse
+    public class LoginUserDtoResponse
     {
-        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string UserName { get; set; }
+        public string Token { get; set; }
+        public string Email { get; set; }
+        public string ImageUrl { get; set; }
+        public string Role { get; set; }
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Role { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
-        public string ImageUrl { get; set; }
+        public string Id { get; set; }
     }
 }

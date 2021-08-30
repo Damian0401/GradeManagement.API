@@ -11,5 +11,7 @@ namespace Application.Interfaces
     public interface IUserService
     {
         Task<ServiceResponse<RegisterUserDtoResponse>> RegisterUserAsync(RegisterUserDtoRequest dto);
+
+        Task<ServiceResponse<LoginUserDtoResponse>> LoginUserAsync(LoginUserDtoRequest dto);
     }
 }

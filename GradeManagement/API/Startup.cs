@@ -81,6 +81,7 @@ namespace API
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
+            services.AddTransient<IValidator<LoginUserDtoRequest>, LoginUserDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
         }
 

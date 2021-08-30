@@ -56,6 +56,28 @@ namespace Application.Services
             return await RegisterStudentAsync(dto, userToRegister);
         }
 
+        public async Task<ServiceResponse<LoginUserDtoResponse>> LoginUserAsync(LoginUserDtoRequest dto)
+        {
+            if (CurrentlyLoggedUser != null)
+                return new ServiceResponse<LoginUserDtoResponse>(HttpStatusCode.BadRequest, "You need to log out first");
+
+            var user = await UserManager.FindByEmailAsync(dto.Email);
+
+            if (user is null)
+                return new ServiceResponse<LoginUserDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+
+            if (!result.Succeeded)
+                return new ServiceResponse<LoginUserDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var responseDto = Mapper.Map<LoginUserDtoResponse>(user);
+
+            responseDto.Token = _jwtGenerator.CreateToken(user, DateTime.Now.AddDays(3));
+
+            return new ServiceResponse<LoginUserDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
+
         private async Task<ServiceResponse<RegisterUserDtoResponse>> ValidateRegisterRequestAsync(RegisterUserDtoRequest dto)
         {
             if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.Email)))

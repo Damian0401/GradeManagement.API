@@ -26,7 +26,17 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm]RegisterUserDtoRequest dto)
         {
-            var response = await  _userService.RegisterUserAsync(dto);
+            var response = await _userService.RegisterUserAsync(dto);
+
+            return SendResponse(response);
+        }
+
+        [Produces(typeof(ServiceResponse<LoginUserDtoResponse>))]
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginUserDtoRequest dto)
+        {
+            var response = await _userService.LoginUserAsync(dto);
 
             return SendResponse(response);
         }
