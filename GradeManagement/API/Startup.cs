@@ -1,6 +1,7 @@
 using Application.Dtos.User;
 using Application.Infrastructure;
 using Application.Interfaces;
+using Application.Middleware;
 using Application.Services;
 using Application.Validators;
 using Domain.Models;
@@ -80,6 +81,7 @@ namespace API
             services.AddAutoMapper(x => x.AddProfile<AutoMapperProfile>(), typeof(Startup));
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<ErrorHandlingMiddleware>();
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
             services.AddTransient<IValidator<LoginUserDtoRequest>, LoginUserDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
@@ -98,6 +100,10 @@ namespace API
             }
 
             app.UseRouting();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

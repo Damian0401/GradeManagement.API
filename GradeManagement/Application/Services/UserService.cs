@@ -21,7 +21,7 @@ namespace Application.Services
 {
     public class UserService : Service, IUserService
     {
-        private readonly ILogger<UserService> _logger;
+        private readonly ILogger _logger;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
 
@@ -76,6 +76,21 @@ namespace Application.Services
             responseDto.Token = _jwtGenerator.CreateToken(user, DateTime.Now.AddDays(3));
 
             return new ServiceResponse<LoginUserDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
+
+        public async Task<ServiceResponse<GetAllUsersDtoResponse>> GetAllUsersAsync()
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetAllUsersDtoResponse>(HttpStatusCode.Unauthorized);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator)
+                return new ServiceResponse<GetAllUsersDtoResponse>(HttpStatusCode.Forbidden);
+
+            var users = await Context.Users.ToListAsync();
+
+            var responseDto = new GetAllUsersDtoResponse { Users = Mapper.Map<List<UserForGetAllUsersDtoResponse>>(users) };
+
+            return new ServiceResponse<GetAllUsersDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
         private async Task<ServiceResponse<RegisterUserDtoResponse>> ValidateRegisterRequestAsync(RegisterUserDtoRequest dto)

@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.User;
 using Application.Interfaces;
 using Application.Services.Utilities;
+using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,17 @@ namespace API.Controllers
         public async Task<IActionResult> Login(LoginUserDtoRequest dto)
         {
             var response = await _userService.LoginUserAsync(dto);
+
+            return SendResponse(response);
+        }
+
+        [Produces(typeof(ServiceResponse<GetAllUsersDtoResponse>))]
+        //[Authorize(Roles = Role.Administrator)]
+        [AllowAnonymous]
+        [HttpGet("")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var response = await _userService.GetAllUsersAsync();
 
             return SendResponse(response);
         }

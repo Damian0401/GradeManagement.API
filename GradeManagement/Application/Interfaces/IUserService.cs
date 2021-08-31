@@ -13,5 +13,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<RegisterUserDtoResponse>> RegisterUserAsync(RegisterUserDtoRequest dto);
 
         Task<ServiceResponse<LoginUserDtoResponse>> LoginUserAsync(LoginUserDtoRequest dto);
+
+        Task<ServiceResponse<GetAllUsersDtoResponse>> GetAllUsersAsync();
     }
 }
