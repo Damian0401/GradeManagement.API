@@ -92,6 +92,14 @@ namespace Application.Services
 
             return new ServiceResponse<GetAllUsersDtoResponse>(HttpStatusCode.OK, responseDto);
         }
+        public async Task<ServiceResponse<GetAllStudentsDtoResponse>> GetAllStudentsAsync()
+        {
+            var students = await Context.Users.Where(x => x.Role.Equals(Role.Student)).ToListAsync();
+
+            var responseDto = new GetAllStudentsDtoResponse { Students = Mapper.Map<List<StudentForGetAllStudentsDtoResponse>>(students) };
+
+            return new ServiceResponse<GetAllStudentsDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
 
         private async Task<ServiceResponse<RegisterUserDtoResponse>> ValidateRegisterRequestAsync(RegisterUserDtoRequest dto)
         {
@@ -196,5 +204,6 @@ namespace Application.Services
 
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK, responseDto);
         }
+
     }
 }

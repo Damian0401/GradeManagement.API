@@ -23,6 +23,7 @@ namespace Application.Infrastructure
             CreateMap<LoginUserDtoRequest, ApplicationUser>();
             CreateMap<ApplicationUser, LoginUserDtoResponse>();
             CreateMap<ApplicationUser, UserForGetAllUsersDtoResponse>();
+            CreateMap<ApplicationUser, StudentForGetAllStudentsDtoResponse>();
         }
     }
 }

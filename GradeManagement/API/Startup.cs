@@ -74,6 +74,10 @@ namespace API
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdministratorOrTeacher", policy => policy.RequireRole(Role.Administrator, Role.Teacher));
+            });
             var builder = services.AddIdentityCore<ApplicationUser>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataBaseContext>();

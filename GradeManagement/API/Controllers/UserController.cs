@@ -43,12 +43,21 @@ namespace API.Controllers
         }
 
         [Produces(typeof(ServiceResponse<GetAllUsersDtoResponse>))]
-        //[Authorize(Roles = Role.Administrator)]
-        [AllowAnonymous]
+        [Authorize(Roles = Role.Administrator)]
         [HttpGet("")]
         public async Task<IActionResult> GetUsers()
         {
             var response = await _userService.GetAllUsersAsync();
+
+            return SendResponse(response);
+        }
+
+
+        [Authorize(Policy = "AdministratorOrTeacher")]
+        [HttpGet("Students")]
+        public async Task<IActionResult> GetStudents()
+        {
+            var response = await _userService.GetAllStudentsAsync();
 
             return SendResponse(response);
         }

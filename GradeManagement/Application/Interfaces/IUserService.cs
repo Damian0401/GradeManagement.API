@@ -15,5 +15,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<LoginUserDtoResponse>> LoginUserAsync(LoginUserDtoRequest dto);
 
         Task<ServiceResponse<GetAllUsersDtoResponse>> GetAllUsersAsync();
+
+        Task<ServiceResponse<GetAllStudentsDtoResponse>> GetAllStudentsAsync();
     }
 }
