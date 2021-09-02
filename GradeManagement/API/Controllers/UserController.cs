@@ -1,4 +1,5 @@
-﻿using Application.Dtos.User;
+﻿using API.Security;
+using Application.Dtos.User;
 using Application.Interfaces;
 using Application.Services.Utilities;
 using Domain.Models;
@@ -53,7 +54,7 @@ namespace API.Controllers
         }
 
 
-        [Authorize(Policy = "AdministratorOrTeacher")]
+        [AuthorizeRoles(Role.Administrator, Role.Teacher)]
         [HttpGet("Students")]
         public async Task<IActionResult> GetStudents()
         {
