@@ -85,6 +85,7 @@ namespace API
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
             services.AddTransient<IValidator<LoginUserDtoRequest>, LoginUserDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<INoteService, NoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

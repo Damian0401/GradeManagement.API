@@ -1,4 +1,5 @@
-﻿using Application.Dtos.User;
+﻿using Application.Dtos.Note;
+using Application.Dtos.User;
 using AutoMapper;
 using Domain.Models;
 using System;
@@ -14,6 +15,7 @@ namespace Application.Infrastructure
         public AutoMapperProfile()
         {
             MapsForUser();
+            MapsForNotes();
         }
 
         private void MapsForUser()
@@ -24,6 +26,11 @@ namespace Application.Infrastructure
             CreateMap<ApplicationUser, LoginUserDtoResponse>();
             CreateMap<ApplicationUser, UserForGetAllUsersDtoResponse>();
             CreateMap<ApplicationUser, StudentForGetAllStudentsDtoResponse>();
+        }
+
+        private void MapsForNotes()
+        {
+            CreateMap<Note, NoteForGetAllNotesDtoResponse>();
         }
     }
 }
