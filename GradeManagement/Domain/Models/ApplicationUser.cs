@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace Domain.Models
 {
@@ -16,5 +17,7 @@ namespace Domain.Models
         public Gender Gender { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public virtual ICollection<Note> Notes { get; set; }
     }
 }
