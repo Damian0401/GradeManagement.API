@@ -62,5 +62,15 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Produces(typeof(ServiceResponse))]
+        [Authorize(Roles = Role.Administrator)]
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> Delete(string userId)
+        {
+            var response = await _userService.DeleteUserAsync(userId);
+
+            return SendResponse(response);
+        }
     }
 }

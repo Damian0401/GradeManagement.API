@@ -101,6 +101,25 @@ namespace Application.Services
             return new ServiceResponse<GetAllStudentsDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
+        public async Task<ServiceResponse> DeleteUserAsync(string userId)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse(HttpStatusCode.Unauthorized);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator &&
+                CurrentlyLoggedUser.Id.Equals(userId))
+                return new ServiceResponse(HttpStatusCode.Forbidden);
+
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user is null)
+                return new ServiceResponse(HttpStatusCode.NotFound);
+
+            await ClearUserData(user);
+
+            return new ServiceResponse(HttpStatusCode.OK);
+        }
+
         private async Task<ServiceResponse<RegisterUserDtoResponse>> ValidateRegisterRequestAsync(RegisterUserDtoRequest dto)
         {
             if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.Email)))
@@ -114,11 +133,6 @@ namespace Application.Services
 
         private async Task<bool> ChangeUserImageAsync(ApplicationUser user, IFormFile image)
         {
-            if (image is null || image.Length <= 0)
-                return false;
-
-            var fileExtension = Path.GetExtension(image.FileName);
-
             var imageFolderPath = "Uploads/Users/Photos";
 
             // Create folder for upload file
@@ -134,6 +148,11 @@ namespace Application.Services
                 {
                     File.Delete(file);
                 }
+
+            if (image is null || image.Length <= 0)
+                return false;
+
+            var fileExtension = Path.GetExtension(image.FileName);
 
             var newFileName = $"{user.Id}{fileExtension}";
 
@@ -205,5 +224,17 @@ namespace Application.Services
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
+        private async Task ClearUserData(ApplicationUser user)
+        {
+            var notes = await Context.Notes.Where(x => x.UserId.Equals(user.Id)).ToListAsync();
+
+            Context.Notes.RemoveRange(notes);
+
+            await Context.SaveChangesAsync();
+
+            _ = await ChangeUserImageAsync(user, null);
+
+            await UserManager.DeleteAsync(user);
+        }
     }
 }

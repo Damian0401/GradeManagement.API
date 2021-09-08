@@ -23,7 +23,7 @@ namespace Application.Middleware
             }
             catch(Exception e)
             {
-                _logger.LogError(e.Message);
+                _logger.LogError(e, e.Message);
 
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 

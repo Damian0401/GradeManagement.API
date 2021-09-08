@@ -17,5 +17,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<GetAllUsersDtoResponse>> GetAllUsersAsync();
 
         Task<ServiceResponse<GetAllStudentsDtoResponse>> GetAllStudentsAsync();
+
+        Task<ServiceResponse> DeleteUserAsync(string userId);
     }
 }
