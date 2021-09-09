@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Note;
+using Application.Dtos.Notes;
 using Application.Interfaces;
 using Application.Services.Utilities;
 using Domain.Models;
@@ -21,6 +22,26 @@ namespace Application.Services
             : base(serviceProvider)
         {
             _logger = logger;
+        }
+
+        public async Task<ServiceResponse<CreateNoteDtoResponse>> CreateNoteAsync(CreateNoteDtoRequest dto)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<CreateNoteDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var note = Mapper.Map<Note>(dto);
+
+            note.UserId = CurrentlyLoggedUser.Id;
+
+            Context.Notes.Add(note);
+
+            var result = await Context.SaveChangesAsync();
+
+            var responseDto = Mapper.Map<CreateNoteDtoResponse>(note);
+
+            return result > 0
+                ? new ServiceResponse<CreateNoteDtoResponse>(HttpStatusCode.OK, responseDto)
+                : new ServiceResponse<CreateNoteDtoResponse>(HttpStatusCode.BadRequest, "Unable to save note in datebase");
         }
 
         public async Task<ServiceResponse<GetAllNotesDtoResponse>> GetAllNotesAsync()

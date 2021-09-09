@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Note;
+using Application.Dtos.Notes;
 using Application.Dtos.User;
 using AutoMapper;
 using Domain.Models;
@@ -31,6 +32,8 @@ namespace Application.Infrastructure
         private void MapsForNotes()
         {
             CreateMap<Note, NoteForGetAllNotesDtoResponse>();
+            CreateMap<CreateNoteDtoRequest, Note>();
+            CreateMap<Note, CreateNoteDtoResponse>();
         }
     }
 }

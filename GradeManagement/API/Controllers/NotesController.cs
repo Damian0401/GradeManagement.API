@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Note;
+using Application.Dtos.Notes;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +23,19 @@ namespace API.Controllers
         [Produces(typeof(GetAllNotesDtoResponse))]
         [Authorize(Roles = Role.Administrator)]
         [HttpGet]
-        public async Task<IActionResult> Sample()
+        public async Task<IActionResult> GetNotes()
         {
             var response = await _noteService.GetAllNotesAsync();
+
+            return SendResponse(response);
+        }
+
+        [Produces(typeof(CreateNoteDtoResponse))]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateNoteDtoRequest dto)
+        {
+            var response = await _noteService.CreateNoteAsync(dto);
 
             return SendResponse(response);
         }

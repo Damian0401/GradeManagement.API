@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Note;
+using Application.Dtos.Notes;
 using Application.Services.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,7 @@ namespace Application.Interfaces
     public interface INoteService
     {
         Task<ServiceResponse<GetAllNotesDtoResponse>> GetAllNotesAsync();
+
+        Task<ServiceResponse<CreateNoteDtoResponse>> CreateNoteAsync(CreateNoteDtoRequest dto);
     }
 }
