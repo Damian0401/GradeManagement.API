@@ -12,7 +12,7 @@ namespace Application.Interfaces
     public interface INoteService
     {
         Task<ServiceResponse<GetAllNotesDtoResponse>> GetAllNotesAsync();
-
         Task<ServiceResponse<CreateNoteDtoResponse>> CreateNoteAsync(CreateNoteDtoRequest dto);
+        Task<ServiceResponse> DeleteNoteAsync(Guid noteId);
     }
 }

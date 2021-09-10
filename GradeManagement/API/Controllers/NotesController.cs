@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Note;
 using Application.Dtos.Notes;
 using Application.Interfaces;
+using Application.Services.Utilities;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +37,16 @@ namespace API.Controllers
         public async Task<IActionResult> Create(CreateNoteDtoRequest dto)
         {
             var response = await _noteService.CreateNoteAsync(dto);
+
+            return SendResponse(response);
+        }
+
+        [Produces(typeof(ServiceResponse))]
+        [Authorize]
+        [HttpDelete("{noteId}")]
+        public async Task<IActionResult> Delete([FromRoute]Guid noteId)
+        {
+            var response = await _noteService.DeleteNoteAsync(noteId);
 
             return SendResponse(response);
         }
