@@ -14,5 +14,6 @@ namespace Application.Interfaces
         Task<ServiceResponse<GetAllNotesDtoResponse>> GetAllNotesAsync();
         Task<ServiceResponse<CreateNoteDtoResponse>> CreateNoteAsync(CreateNoteDtoRequest dto);
         Task<ServiceResponse> DeleteNoteAsync(Guid noteId);
+        Task<ServiceResponse<GetMyNotesDtoResponse>> GetMyNotesAsync();
     }
 }

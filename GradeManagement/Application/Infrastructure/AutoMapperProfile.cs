@@ -34,6 +34,7 @@ namespace Application.Infrastructure
             CreateMap<Note, NoteForGetAllNotesDtoResponse>();
             CreateMap<CreateNoteDtoRequest, Note>();
             CreateMap<Note, CreateNoteDtoResponse>();
+            CreateMap<Note, NoteForGetMyNotesDtoResponse>();
         }
     }
 }

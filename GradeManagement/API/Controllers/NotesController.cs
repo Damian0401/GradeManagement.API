@@ -31,6 +31,16 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
+        [Produces(typeof(GetMyNotesDtoResponse))]
+        [Authorize]
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyNotes()
+        {
+            var response = await _noteService.GetMyNotesAsync();
+
+            return SendResponse(response);
+        }
+
         [Produces(typeof(CreateNoteDtoResponse))]
         [Authorize]
         [HttpPost]

@@ -81,5 +81,19 @@ namespace Application.Services
 
             return new ServiceResponse<GetAllNotesDtoResponse>(HttpStatusCode.OK, responseDto);
         }
+
+        public async Task<ServiceResponse<GetMyNotesDtoResponse>> GetMyNotesAsync()
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetMyNotesDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var userId = CurrentlyLoggedUser.Id;
+
+            var notes = await Context.Notes.Where(x => x.UserId.Equals(userId)).ToListAsync();
+
+            var responseDto = new GetMyNotesDtoResponse { Notes = Mapper.Map<List<NoteForGetMyNotesDtoResponse>>(notes) };
+
+            return new ServiceResponse<GetMyNotesDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
     }
 }
