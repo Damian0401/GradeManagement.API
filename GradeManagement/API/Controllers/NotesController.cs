@@ -31,6 +31,16 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
+        [Produces(typeof(GetNoteByIdDtoResponse))]
+        [Authorize]
+        [HttpGet("{noteId}")]
+        public async Task<IActionResult> GetById(Guid noteId)
+        {
+            var response = await _noteService.GetNoteByIdAsync(noteId);
+
+            return SendResponse(response);
+        }
+
         [Produces(typeof(GetMyNotesDtoResponse))]
         [Authorize]
         [HttpGet("my")]

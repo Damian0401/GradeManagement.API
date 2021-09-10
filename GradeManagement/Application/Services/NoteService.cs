@@ -96,6 +96,25 @@ namespace Application.Services
             return new ServiceResponse<GetMyNotesDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
+        public async Task<ServiceResponse<GetNoteByIdDtoResponse>> GetNoteByIdAsync(Guid noteId)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetNoteByIdDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var note = await Context.Notes.Where(x => x.Id.Equals(noteId)).FirstOrDefaultAsync();
+
+            if (note is null)
+                return new ServiceResponse<GetNoteByIdDtoResponse>(HttpStatusCode.NotFound);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator
+                && CurrentlyLoggedUser.Id != note.UserId)
+                return new ServiceResponse<GetNoteByIdDtoResponse>(HttpStatusCode.Forbidden);
+
+            var reponseDto = Mapper.Map<GetNoteByIdDtoResponse>(note);
+
+            return new ServiceResponse<GetNoteByIdDtoResponse>(HttpStatusCode.OK, reponseDto);
+        }
+
         public async Task<ServiceResponse<UpdateNoteDtoResponse>> UpdateNoteAsync(Guid noteId, UpdateNoteDtoRequest dto)
         {
             if (CurrentlyLoggedUser is null)
