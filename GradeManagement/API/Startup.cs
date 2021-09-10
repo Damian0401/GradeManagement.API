@@ -1,9 +1,11 @@
+using Application.Dtos.Notes;
 using Application.Dtos.User;
 using Application.Infrastructure;
 using Application.Interfaces;
 using Application.Middleware;
 using Application.Services;
 using Application.Validators;
+using Application.Validators.Note;
 using Domain.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -84,6 +86,7 @@ namespace API
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
             services.AddTransient<IValidator<LoginUserDtoRequest>, LoginUserDtoRequestValidator>();
+            services.AddTransient<IValidator<CreateNoteDtoRequest>, CreateNoteDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
         }
