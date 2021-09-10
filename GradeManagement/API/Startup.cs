@@ -87,6 +87,7 @@ namespace API
             services.AddTransient<IValidator<RegisterUserDtoRequest>, RegisterUserDtoRequestValidator>();
             services.AddTransient<IValidator<LoginUserDtoRequest>, LoginUserDtoRequestValidator>();
             services.AddTransient<IValidator<CreateNoteDtoRequest>, CreateNoteDtoRequestValidator>();
+            services.AddTransient<IValidator<UpdateNoteDtoRequest>, UpdateNoteDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
         }

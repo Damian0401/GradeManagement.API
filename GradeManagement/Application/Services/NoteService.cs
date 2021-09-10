@@ -95,5 +95,30 @@ namespace Application.Services
 
             return new ServiceResponse<GetMyNotesDtoResponse>(HttpStatusCode.OK, responseDto);
         }
+
+        public async Task<ServiceResponse<UpdateNoteDtoResponse>> UpdateNoteAsync(Guid noteId, UpdateNoteDtoRequest dto)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<UpdateNoteDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var note = await Context.Notes.Where(x => x.Id.Equals(noteId)).FirstOrDefaultAsync();
+
+            if (note is null)
+                return new ServiceResponse<UpdateNoteDtoResponse>(HttpStatusCode.NotFound);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator
+                && CurrentlyLoggedUser.Id != note.UserId)
+                return new ServiceResponse<UpdateNoteDtoResponse>(HttpStatusCode.Forbidden);
+
+            Mapper.Map(dto, note);
+
+            var result = await Context.SaveChangesAsync();
+
+            var responseDto = Mapper.Map<UpdateNoteDtoResponse>(note);
+
+            return result > 0
+                ? new ServiceResponse<UpdateNoteDtoResponse>(HttpStatusCode.OK, responseDto)
+                : new ServiceResponse<UpdateNoteDtoResponse>(HttpStatusCode.BadRequest, "Unable to update note");
+        }
     }
 }

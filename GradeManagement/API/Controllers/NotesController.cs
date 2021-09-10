@@ -60,5 +60,15 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Produces(typeof(UpdateNoteDtoResponse))]
+        [Authorize]
+        [HttpPut("{noteId}")]
+        public async Task<IActionResult> Update(Guid noteId, UpdateNoteDtoRequest dto)
+        {
+            var response = await _noteService.UpdateNoteAsync(noteId, dto);
+
+            return SendResponse(response);
+        }
     }
 }
