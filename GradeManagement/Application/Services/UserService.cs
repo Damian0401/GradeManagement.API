@@ -92,6 +92,26 @@ namespace Application.Services
 
             return new ServiceResponse<GetAllUsersDtoResponse>(HttpStatusCode.OK, responseDto);
         }
+
+        public async Task<ServiceResponse<GetUserByIdDtoResponse>> GetUserByIdAsync(string userId)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetUserByIdDtoResponse>(HttpStatusCode.Unauthorized);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator
+                && CurrentlyLoggedUser.Role != Role.Teacher)
+                return new ServiceResponse<GetUserByIdDtoResponse>(HttpStatusCode.Forbidden);
+
+            var user = await Context.Users.FirstOrDefaultAsync(x => x.Id.Equals(userId));
+
+            if (user is null)
+                return new ServiceResponse<GetUserByIdDtoResponse>(HttpStatusCode.NotFound);
+
+            var responseDto = Mapper.Map<GetUserByIdDtoResponse>(user);
+
+            return new ServiceResponse<GetUserByIdDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
+
         public async Task<ServiceResponse<GetAllStudentsDtoResponse>> GetAllStudentsAsync()
         {
             var students = await Context.Users.Where(x => x.Role.Equals(Role.Student)).ToListAsync();

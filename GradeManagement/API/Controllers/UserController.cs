@@ -53,6 +53,15 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
+        [Produces(typeof(ServiceResponse<GetUserByIdDtoResponse>))]
+        [AuthorizeRoles(Role.Administrator, Role.Teacher)]
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserById([FromRoute]string userId)
+        {
+            var response = await _userService.GetUserByIdAsync(userId);
+
+            return SendResponse(response);
+        }
 
         [AuthorizeRoles(Role.Administrator, Role.Teacher)]
         [HttpGet("Students")]

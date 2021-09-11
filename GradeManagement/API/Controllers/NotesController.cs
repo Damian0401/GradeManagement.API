@@ -21,7 +21,7 @@ namespace API.Controllers
             _noteService = noteService;
         }
 
-        [Produces(typeof(GetAllNotesDtoResponse))]
+        [Produces(typeof(ServiceResponse<GetAllNotesDtoResponse>))]
         [Authorize(Roles = Role.Administrator)]
         [HttpGet]
         public async Task<IActionResult> GetNotes()
@@ -31,7 +31,7 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
-        [Produces(typeof(GetNoteByIdDtoResponse))]
+        [Produces(typeof(ServiceResponse<GetNoteByIdDtoResponse>))]
         [Authorize]
         [HttpGet("{noteId}")]
         public async Task<IActionResult> GetById(Guid noteId)
@@ -41,7 +41,7 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
-        [Produces(typeof(GetMyNotesDtoResponse))]
+        [Produces(typeof(ServiceResponse<GetMyNotesDtoResponse>))]
         [Authorize]
         [HttpGet("my")]
         public async Task<IActionResult> GetMyNotes()
@@ -51,7 +51,7 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
-        [Produces(typeof(CreateNoteDtoResponse))]
+        [Produces(typeof(ServiceResponse<CreateNoteDtoResponse>))]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateNoteDtoRequest dto)
@@ -71,7 +71,7 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
-        [Produces(typeof(UpdateNoteDtoResponse))]
+        [Produces(typeof(ServiceResponse<UpdateNoteDtoResponse>))]
         [Authorize]
         [HttpPut("{noteId}")]
         public async Task<IActionResult> Update(Guid noteId, UpdateNoteDtoRequest dto)
