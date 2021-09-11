@@ -28,6 +28,7 @@ namespace Application.Infrastructure
             CreateMap<ApplicationUser, UserForGetAllUsersDtoResponse>();
             CreateMap<ApplicationUser, StudentForGetAllStudentsDtoResponse>();
             CreateMap<ApplicationUser, GetUserByIdDtoResponse>();
+            CreateMap<ApplicationUser, TeacherForGetAllStudentsDtoResponse>();
         }
 
         private void MapsForNotes()

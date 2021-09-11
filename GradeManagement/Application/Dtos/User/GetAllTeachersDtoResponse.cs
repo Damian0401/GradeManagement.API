@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos.User
 {
-    public class GetAllStudentsDtoResponse
+    public class GetAllTeachersDtoResponse
     {
-        public List<StudentForGetAllStudentsDtoResponse> Students { get; set; }
+        public List<TeacherForGetAllStudentsDtoResponse> Student { get; set; }
     }
 
-    public class StudentForGetAllStudentsDtoResponse
+    public class TeacherForGetAllStudentsDtoResponse
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

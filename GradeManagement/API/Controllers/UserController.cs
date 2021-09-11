@@ -81,5 +81,15 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Produces(typeof(ServiceResponse<GetAllTeachersDtoResponse>))]
+        [AuthorizeRoles(Role.Administrator)]
+        [HttpGet("Teachers")]
+        public async Task<IActionResult> GetTeachers()
+        {
+            var response = await _userService.GetAllTeachersAsync();
+
+            return SendResponse(response);
+        }
     }
 }

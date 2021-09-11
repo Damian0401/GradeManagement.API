@@ -121,6 +121,21 @@ namespace Application.Services
             return new ServiceResponse<GetAllStudentsDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
+        public async Task<ServiceResponse<GetAllTeachersDtoResponse>> GetAllTeachersAsync()
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.Unauthorized);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator)
+                return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.Forbidden);
+
+            var teachers = await Context.Users.Where(x => x.Role.Equals(Role.Teacher)).ToListAsync();
+
+            var responseDto = new GetAllTeachersDtoResponse { Student = Mapper.Map <List<TeacherForGetAllStudentsDtoResponse>>(teachers) };
+
+            return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.OK);
+        }
+
         public async Task<ServiceResponse> DeleteUserAsync(string userId)
         {
             if (CurrentlyLoggedUser is null)
