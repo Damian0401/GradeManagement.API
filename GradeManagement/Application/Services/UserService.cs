@@ -137,6 +137,8 @@ namespace Application.Services
 
             await ClearUserData(user);
 
+            _logger.LogInformation($"User: {user.UserName} deleted by: {CurrentlyLoggedUserName}");
+
             return new ServiceResponse(HttpStatusCode.OK);
         }
 
@@ -216,7 +218,7 @@ namespace Application.Services
                 return createUserResponse;
 
             if (dto.Role.Equals(Role.Teacher))
-                _logger.LogInformation($"Registered new teacher: {dto.Email}");
+                _logger.LogInformation($"Registered new teacher: {dto.UserName}");
 
             var responseDto = Mapper.Map<RegisterUserDtoResponse>(userToRegister);
 
@@ -235,7 +237,7 @@ namespace Application.Services
             if (createUserResponse.StatusCode != HttpStatusCode.OK)
                 return createUserResponse;
 
-            _logger.LogInformation($"Registered new student: {dto.Email}");
+            _logger.LogInformation($"Registered new student: {dto.UserName}");
 
             var responseDto = Mapper.Map<RegisterUserDtoResponse>(userToRegister);
 
