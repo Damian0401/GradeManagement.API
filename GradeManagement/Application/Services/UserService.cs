@@ -117,10 +117,6 @@ namespace Application.Services
             if (CurrentlyLoggedUser is null)
                 return new ServiceResponse<GetAllStudentsDtoResponse>(HttpStatusCode.Unauthorized);
 
-            if (CurrentlyLoggedUser.Role != Role.Administrator
-                && CurrentlyLoggedUser.Role != Role.Teacher)
-                return new ServiceResponse<GetAllStudentsDtoResponse>(HttpStatusCode.Forbidden);
-
             var students = await Context.Users.Where(x => x.Role.Equals(Role.Student)).ToListAsync();
 
             var responseDto = new GetAllStudentsDtoResponse { Students = Mapper.Map<List<StudentForGetAllStudentsDtoResponse>>(students) };
@@ -132,9 +128,6 @@ namespace Application.Services
         {
             if (CurrentlyLoggedUser is null)
                 return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.Unauthorized);
-
-            if (CurrentlyLoggedUser.Role != Role.Administrator)
-                return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.Forbidden);
 
             var teachers = await Context.Users.Where(x => x.Role.Equals(Role.Teacher)).ToListAsync();
 

@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
         [Produces(typeof(ServiceResponse<GetAllUsersDtoResponse>))]
-        [Authorize(Roles = Role.Administrator)]
+        [AuthorizeRoles(Role.Administrator)]
         [HttpGet("")]
         public async Task<IActionResult> GetUsers()
         {
@@ -63,7 +63,7 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
-        [AuthorizeRoles(Role.Administrator, Role.Teacher)]
+        [Authorize]
         [HttpGet("Students")]
         public async Task<IActionResult> GetStudents()
         {
@@ -73,7 +73,7 @@ namespace API.Controllers
         }
 
         [Produces(typeof(ServiceResponse))]
-        [Authorize(Roles = Role.Administrator)]
+        [Authorize]
         [HttpDelete("{userId}")]
         public async Task<IActionResult> Delete(string userId)
         {
@@ -83,7 +83,7 @@ namespace API.Controllers
         }
 
         [Produces(typeof(ServiceResponse<GetAllTeachersDtoResponse>))]
-        [AuthorizeRoles(Role.Administrator)]
+        [Authorize]
         [HttpGet("Teachers")]
         public async Task<IActionResult> GetTeachers()
         {
