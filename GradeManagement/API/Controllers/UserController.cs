@@ -91,5 +91,15 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Produces(typeof(ServiceResponse<EditUserProfileDtoResponse>))]
+        [Authorize]
+        [HttpPut("")]
+        public async Task<IActionResult> EditProfile([FromForm]EditUserProfileDtoRequest dto)
+        {
+            var response = await _userService.EditUserProfileAsync(dto);
+
+            return SendResponse(response);
+        }
     }
 }

@@ -43,10 +43,10 @@ namespace Application.Services
 
         public async Task<ServiceResponse<RegisterUserDtoResponse>> RegisterUserAsync(RegisterUserDtoRequest dto)
         {
-            var validationResonse = await ValidateRegisterRequestAsync(dto);
+            var validationResponse = await ValidateRegisterRequestAsync(dto);
 
-            if (validationResonse.StatusCode != HttpStatusCode.OK)
-                return validationResonse;
+            if (validationResponse.StatusCode != HttpStatusCode.OK)
+                return validationResponse;
 
             var userToRegister = Mapper.Map<ApplicationUser>(dto);
 
@@ -143,6 +143,19 @@ namespace Application.Services
             return new ServiceResponse<GetAllTeachersDtoResponse>(HttpStatusCode.OK);
         }
 
+        public async Task<ServiceResponse<EditUserProfileDtoResponse>> EditUserProfileAsync(EditUserProfileDtoRequest dto)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var validationResponse = await ValidateEditRequestAsync(dto);
+
+            if (validationResponse.StatusCode != HttpStatusCode.OK)
+                return validationResponse;
+
+            return await UpdateUserProfileAsync(dto);
+        }
+
         public async Task<ServiceResponse> DeleteUserAsync(string userId)
         {
             if (CurrentlyLoggedUser is null)
@@ -157,7 +170,7 @@ namespace Application.Services
             if (user is null)
                 return new ServiceResponse(HttpStatusCode.NotFound);
 
-            await ClearUserData(user);
+            await ClearUserDataAsync(user);
 
             _logger.LogInformation($"User: {user.UserName} deleted by: {CurrentlyLoggedUserName}");
 
@@ -173,6 +186,17 @@ namespace Application.Services
                 return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.BadRequest, "This UserName is already taken");
 
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK);
+        }
+
+        private async Task<ServiceResponse<EditUserProfileDtoResponse>> ValidateEditRequestAsync(EditUserProfileDtoRequest dto)
+        {
+            if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.Email) && x.Email != dto.Email))
+                return new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.BadRequest, "This email is already taken");
+
+            if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.UserName) && x.UserName != dto.UserName))
+                return new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.BadRequest, "This UserName is already taken");
+
+            return new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.OK);
         }
 
         private async Task<bool> ChangeUserImageAsync(ApplicationUser user, IFormFile image)
@@ -268,7 +292,7 @@ namespace Application.Services
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK, responseDto);
         }
 
-        private async Task ClearUserData(ApplicationUser user)
+        private async Task ClearUserDataAsync(ApplicationUser user)
         {
             var notes = await Context.Notes.Where(x => x.UserId.Equals(user.Id)).ToListAsync();
 
@@ -279,6 +303,27 @@ namespace Application.Services
             _ = await ChangeUserImageAsync(user, null);
 
             await UserManager.DeleteAsync(user);
+        }
+
+        private async Task<ServiceResponse<EditUserProfileDtoResponse>> UpdateUserProfileAsync(EditUserProfileDtoRequest dto)
+        {
+            Mapper.Map(dto, CurrentlyLoggedUser);
+
+            if (dto.Image != null)
+            {
+                var isImageChanged = await ChangeUserImageAsync(CurrentlyLoggedUser, dto.Image);
+
+                if (isImageChanged)
+                    await Context.SaveChangesAsync();
+            }
+
+            var updateResponse = await UserManager.UpdateAsync(CurrentlyLoggedUser);
+
+            var responseDto = Mapper.Map<EditUserProfileDtoResponse>(CurrentlyLoggedUser);
+
+            return updateResponse.Equals(IdentityResult.Success)
+                ? new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.OK, responseDto)
+                : new ServiceResponse<EditUserProfileDtoResponse>(HttpStatusCode.BadRequest, "Unable to update user");
         }
     }
 }

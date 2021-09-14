@@ -17,6 +17,7 @@ namespace Application.Dtos.User
         public string ImageUrl { get; set; }
         public string Role { get; set; }
         public string Id { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string ClassId { get; set; }
         public string IndexNumber { get; set; }
     }

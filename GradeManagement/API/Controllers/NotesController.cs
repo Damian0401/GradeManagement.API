@@ -23,7 +23,7 @@ namespace API.Controllers
 
         [Produces(typeof(ServiceResponse<GetAllNotesDtoResponse>))]
         [Authorize(Roles = Role.Administrator)]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> GetNotes()
         {
             var response = await _noteService.GetAllNotesAsync();
@@ -53,7 +53,7 @@ namespace API.Controllers
 
         [Produces(typeof(ServiceResponse<CreateNoteDtoResponse>))]
         [Authorize]
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Create(CreateNoteDtoRequest dto)
         {
             var response = await _noteService.CreateNoteAsync(dto);
