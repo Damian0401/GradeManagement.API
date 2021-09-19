@@ -8,6 +8,7 @@ namespace Presistence
     public class DataBaseContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
         {
@@ -21,6 +22,22 @@ namespace Presistence
             builder.Entity<Note>()
                 .Property(x => x.Title)
                 .HasMaxLength(255);
+            builder.Entity<Message>()
+                .Property(x => x.Title)
+                .HasMaxLength(255);
+            builder.Entity<Message>()
+                .Property(x => x.IsRead)
+                .HasDefaultValue(false);
+            builder.Entity<Message>()
+                .HasOne(x => x.UserFrom)
+                .WithMany(x => x.SentMessages)
+                .HasForeignKey(x => x.UserFromId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Message>()
+                .HasOne(x => x.UserTo)
+                .WithMany(x => x.ReceivedMessages)
+                .HasForeignKey(x => x.UserToId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             var converner = new EnumToStringConverter<Gender>();
 
