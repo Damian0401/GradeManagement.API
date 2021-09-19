@@ -17,6 +17,7 @@ namespace Application.Infrastructure
         {
             MapsForUser();
             MapsForNotes();
+            MapsForMessages();
         }
 
         private void MapsForUser()
@@ -42,6 +43,11 @@ namespace Application.Infrastructure
             CreateMap<UpdateNoteDtoRequest, Note>();
             CreateMap<Note, UpdateNoteDtoResponse>();
             CreateMap<Note, GetNoteByIdDtoResponse>();
+        }
+
+        private void MapsForMessages()
+        {
+            // TODO
         }
     }
 }

@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class NotesController : BaseController
+    public class NoteController : BaseController
     {
         private readonly INoteService _noteService;
-        public NotesController(INoteService noteService)
+        public NoteController(INoteService noteService)
         {
             _noteService = noteService;
         }
