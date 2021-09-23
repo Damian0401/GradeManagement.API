@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Presistence\Presistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\Message\" />
-  </ItemGroup>
-
 </Project>

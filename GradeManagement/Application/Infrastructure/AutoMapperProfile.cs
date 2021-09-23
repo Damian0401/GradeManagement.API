@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Note;
+﻿using Application.Dtos.Message;
+using Application.Dtos.Note;
 using Application.Dtos.Notes;
 using Application.Dtos.User;
 using AutoMapper;
@@ -47,7 +48,7 @@ namespace Application.Infrastructure
 
         private void MapsForMessages()
         {
-            // TODO
+            CreateMap<SendMessageDtoRequest, Message>();
         }
     }
 }

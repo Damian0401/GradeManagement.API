@@ -1,3 +1,4 @@
+using Application.Dtos.Message;
 using Application.Dtos.Notes;
 using Application.Dtos.User;
 using Application.Infrastructure;
@@ -5,6 +6,7 @@ using Application.Interfaces;
 using Application.Middleware;
 using Application.Services;
 using Application.Validators;
+using Application.Validators.Message;
 using Application.Validators.Note;
 using Application.Validators.User;
 using Domain.Models;
@@ -90,6 +92,7 @@ namespace API
             services.AddTransient<IValidator<CreateNoteDtoRequest>, CreateNoteDtoRequestValidator>();
             services.AddTransient<IValidator<UpdateNoteDtoRequest>, UpdateNoteDtoRequestValidator>();
             services.AddTransient<IValidator<EditUserProfileDtoRequest>, EditUserProfileDtoRequestValidator>();
+            services.AddTransient<IValidator<SendMessageDtoRequest>, SendMessageDtoRequestValidator>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
             services.AddTransient<IMessageService, MessageService>();

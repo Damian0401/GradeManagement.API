@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.Dtos.Message;
+using Application.Services.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,6 @@ namespace Application.Interfaces
 {
     public interface IMessageService
     {
-        // TODO
+        Task<ServiceResponse> SendMessageAsync(SendMessageDtoRequest dto);
     }
 }
