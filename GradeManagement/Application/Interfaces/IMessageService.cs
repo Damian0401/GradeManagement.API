@@ -11,5 +11,7 @@ namespace Application.Interfaces
     public interface IMessageService
     {
         Task<ServiceResponse> SendMessageAsync(SendMessageDtoRequest dto);
+        Task<ServiceResponse<GetSentMessagesDtoResponse>> GetSentMessagesAsync();
+        Task<ServiceResponse<GetReceivedMessagesDtoResponse>> GetReceivedMessagesAsync();
     }
 }

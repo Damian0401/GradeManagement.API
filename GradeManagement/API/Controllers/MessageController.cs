@@ -28,5 +28,25 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Produces(typeof(ServiceResponse<GetSentMessagesDtoResponse>))]
+        [Authorize]
+        [HttpGet("sent")]
+        public async Task<IActionResult> Sent()
+        {
+            var response = await _messageService.GetSentMessagesAsync();
+
+            return SendResponse(response);
+        }
+
+        [Produces(typeof(ServiceResponse<GetReceivedMessagesDtoResponse>))]
+        [Authorize]
+        [HttpGet("received")]
+        public async Task<IActionResult> Received()
+        {
+            var response = await _messageService.GetReceivedMessagesAsync();
+
+            return SendResponse(response);
+        }
     }
 }

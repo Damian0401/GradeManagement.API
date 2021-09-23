@@ -12,7 +12,7 @@ namespace Application.Validators.Message
     {
         public SendMessageDtoRequestValidator()
         {
-            RuleFor(x => x.RecevierId)
+            RuleFor(x => x.ReceiverId)
                 .NotEmpty();
             RuleFor(x => x.Title)
                 .NotEmpty()

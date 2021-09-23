@@ -49,6 +49,8 @@ namespace Application.Infrastructure
         private void MapsForMessages()
         {
             CreateMap<SendMessageDtoRequest, Message>();
+            CreateMap<Message, MessageForGetSentMessagesDtoResponse>();
+            CreateMap<Message, MessageForGetReceivedMessagesDtoResponse>();
         }
     }
 }
