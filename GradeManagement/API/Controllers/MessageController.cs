@@ -19,6 +19,16 @@ namespace API.Controllers
             _messageService = messageService;
         }
 
+        [Produces(typeof(ServiceResponse<GetMessageByIdDtoResponse>))]
+        [Authorize]
+        [HttpGet("{messageId}")]
+        public async Task<IActionResult> GetById(Guid messageId)
+        {
+            var response = await _messageService.GetMessageByIdAsync(messageId);
+
+            return SendResponse(response);
+        }
+
         [Produces(typeof(ServiceResponse))]
         [Authorize]
         [HttpPost("")]

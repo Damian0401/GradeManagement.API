@@ -51,6 +51,7 @@ namespace Application.Infrastructure
             CreateMap<SendMessageDtoRequest, Message>();
             CreateMap<Message, MessageForGetSentMessagesDtoResponse>();
             CreateMap<Message, MessageForGetReceivedMessagesDtoResponse>();
+            CreateMap<Message, GetMessageByIdDtoResponse>();
         }
     }
 }

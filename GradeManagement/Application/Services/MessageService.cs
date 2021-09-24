@@ -20,6 +20,31 @@ namespace Application.Services
 
         }
 
+        public async Task<ServiceResponse<GetMessageByIdDtoResponse>> GetMessageByIdAsync(Guid messageId)
+        {
+            if (CurrentlyLoggedUser is null)
+                return new ServiceResponse<GetMessageByIdDtoResponse>(HttpStatusCode.Unauthorized);
+
+            var message = await Context.Messages.FirstOrDefaultAsync(x => x.Id.Equals(messageId));
+
+            if (message is null)
+                return new ServiceResponse<GetMessageByIdDtoResponse>(HttpStatusCode.NotFound);
+
+            if (CurrentlyLoggedUser.Role != Role.Administrator
+                && message.UserFromId != CurrentlyLoggedUser.Id
+                && message.UserToId != CurrentlyLoggedUser.Id)
+                return new ServiceResponse<GetMessageByIdDtoResponse>(HttpStatusCode.Forbidden);
+
+            if (CurrentlyLoggedUser.Id.Equals(message.UserToId))
+                message.IsRead = true;
+
+            _ = await Context.SaveChangesAsync();
+
+            var responseDto = Mapper.Map<GetMessageByIdDtoResponse>(message);
+
+            return new ServiceResponse<GetMessageByIdDtoResponse>(HttpStatusCode.OK, responseDto);
+        }
+
         public async Task<ServiceResponse<GetReceivedMessagesDtoResponse>> GetReceivedMessagesAsync()
         {
             if (CurrentlyLoggedUser is null)
@@ -52,9 +77,7 @@ namespace Application.Services
             if (CurrentlyLoggedUser.Id.Equals(dto.ReceiverId))
                 return new ServiceResponse(HttpStatusCode.BadRequest, "You can not send message to yourself");
 
-            var userTo = await Context.Users.FirstOrDefaultAsync(x => x.Id.Equals(dto.ReceiverId));
-
-            if (userTo is null)
+            if (await Context.Users.AnyAsync(x => x.Id.Equals(dto.ReceiverId)))
                 return new ServiceResponse(HttpStatusCode.NotFound);
 
             var message = Mapper.Map<Message>(dto);

@@ -13,8 +13,9 @@ namespace Application.Dtos.Message
 
     public class MessageForGetSentMessagesDtoResponse
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
+        public DateTime PostedOn { get; set; }
         public bool IsRead { get; set; }
     }
 }

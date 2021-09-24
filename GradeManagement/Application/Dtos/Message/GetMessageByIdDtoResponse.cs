@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos.Message
 {
-    public class GetReceivedMessagesDtoResponse
-    {
-        public List<MessageForGetReceivedMessagesDtoResponse> Messages { get; set; }
-    }
-
-    public class MessageForGetReceivedMessagesDtoResponse
+    public class GetMessageByIdDtoResponse
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
+        public string Payload { get; set; }
         public DateTime PostedOn { get; set; }
-        public bool IsRead { get; set; }
     }
 }

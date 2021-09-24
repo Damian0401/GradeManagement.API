@@ -13,5 +13,6 @@ namespace Application.Interfaces
         Task<ServiceResponse> SendMessageAsync(SendMessageDtoRequest dto);
         Task<ServiceResponse<GetSentMessagesDtoResponse>> GetSentMessagesAsync();
         Task<ServiceResponse<GetReceivedMessagesDtoResponse>> GetReceivedMessagesAsync();
+        Task<ServiceResponse<GetMessageByIdDtoResponse>> GetMessageByIdAsync(Guid messageId);
     }
 }
