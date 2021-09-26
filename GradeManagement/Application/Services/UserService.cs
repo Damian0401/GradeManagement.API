@@ -291,6 +291,26 @@ namespace Application.Services
 
             Context.Notes.RemoveRange(notes);
 
+            var sentMessages = await Context.Messages.Where(x => x.UserFromId.Equals(user.Id)).ToListAsync();
+
+            foreach (var message in sentMessages)
+                message.UserFromId = null;
+
+            var receivedMessages = await Context.Messages.Where(x => x.UserToId.Equals(user.Id)).ToListAsync();
+
+            foreach (var message in receivedMessages)
+                message.UserToId = null;
+
+            var messagesToRemove = sentMessages
+                .Where(x => x.UserFromId is null && x.UserToId is null)
+                .ToList();
+
+            messagesToRemove.AddRange(receivedMessages
+                .Where(x => x.UserToId is null && x.UserFromId is null)
+                .ToList());
+
+            Context.RemoveRange(messagesToRemove);
+
             await Context.SaveChangesAsync();
 
             _ = await ChangeUserImageAsync(user, null);

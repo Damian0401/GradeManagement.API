@@ -77,7 +77,7 @@ namespace Application.Services
             if (CurrentlyLoggedUser.Id.Equals(dto.ReceiverId))
                 return new ServiceResponse(HttpStatusCode.BadRequest, "You can not send message to yourself");
 
-            if (await Context.Users.AnyAsync(x => x.Id.Equals(dto.ReceiverId)))
+            if (!await Context.Users.AnyAsync(x => x.Id.Equals(dto.ReceiverId)))
                 return new ServiceResponse(HttpStatusCode.NotFound);
 
             var message = Mapper.Map<Message>(dto);
