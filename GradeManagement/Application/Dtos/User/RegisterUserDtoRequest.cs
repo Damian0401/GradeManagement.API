@@ -20,6 +20,8 @@ namespace Application.Dtos.User
 
         public string Password { get; set; }
 
+        public string PasswordConfirm { get; set; }
+
         public string Role { get; set; }
 
         public IFormFile Image { get; set; }

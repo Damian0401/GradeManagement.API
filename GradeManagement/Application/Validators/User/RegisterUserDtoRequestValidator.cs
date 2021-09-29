@@ -54,6 +54,10 @@ namespace Application.Validators
 
             RuleFor(x => x.Gender)
                 .NotEmpty();
+
+            RuleFor(x => x.PasswordConfirm)
+                .NotEmpty()
+                .Equal(x => x.Password);
         }
     }
 }
