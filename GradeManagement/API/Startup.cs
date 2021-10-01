@@ -54,13 +54,6 @@ namespace API
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("GradeDBContext"));
             });
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-            });
             services.AddMvc(option => option.EnableEndpointRouting = false).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -96,6 +89,14 @@ namespace API
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
             services.AddTransient<IMessageService, MessageService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,12 +119,13 @@ namespace API
 
             app.UseAuthorization();
 
+            app.UseCors("CorsPolicy");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseCors("CorsPolicy");
 
             app.UseMvc();
 

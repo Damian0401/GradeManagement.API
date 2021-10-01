@@ -38,7 +38,7 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginUserDtoRequest dto)
         {
-            var response = await _userService.LoginUserAsync(dto);
+            var response = await _userService.LoginUserAsync(dto);  
 
             return SendResponse(response);
         }
