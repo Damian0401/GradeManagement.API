@@ -175,7 +175,7 @@ namespace Application.Services
             if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.Email)))
                 return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.BadRequest, "This email is already taken");
 
-            if (await Context.Users.AnyAsync(x => x.Email.Equals(dto.UserName)))
+            if (await Context.Users.AnyAsync(x => x.UserName.Equals(dto.UserName)))
                 return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.BadRequest, "This UserName is already taken");
 
             return new ServiceResponse<RegisterUserDtoResponse>(HttpStatusCode.OK);
